@@ -20,10 +20,14 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;; Begin function defintions.
     ;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(defun-extern get-jak-speed (float))
+(defun-extern set-game-speed float (none))
     (defun runs-every-frame ()
     ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
-      
+      (when *target*
+       (set-game-speed (*(get-jak-speed)0.05))
+      )
+     
       
       (none)
       )

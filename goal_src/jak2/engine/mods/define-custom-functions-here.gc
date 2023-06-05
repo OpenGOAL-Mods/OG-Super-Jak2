@@ -42,6 +42,117 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
 ;; Define Custom Functions to call in mods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+
+(defun get-jak-speed ()
+(let ((f0-16 (vector-length (let ((v1-180 (new-stack-vector0))) (vector-! v1-180 (-> *target* control transv) (vector-float*! v1-180 (-> *target* control dynam gravity-normal) (vector-dot (-> *target* control dynam gravity-normal) (-> *target* control transv)))))))) (return (/ f0-16 4096)))
+
+0.0
+)
+
+
+(define in-zoomer? #f)
+
+
+(defun set-game-speed ((gamespeed float))
+
+(if (= (-> *target* focus-status) (focus-status pilot))
+(set! in-zoomer? #t)
+(set! in-zoomer? #f)
+)
+
+
+
+(if (and (= gamespeed 0.0) (= (-> *target* focus-status) (focus-status mech)))
+(set! gamespeed 0.1)
+)
+
+(if (and 
+(task-node-open? (game-task-node drill-eggs-eggs-2))
+(= gamespeed 0.0)
+(not (task-node-open? (game-task-node drill-eggs-eggs-0))))
+
+(set! gamespeed 0.7)
+)
+
+(if (and 
+(task-node-open? (game-task-node city-errol-challenge-race))
+(= gamespeed 0.0)
+(not (task-node-open? (game-task-node city-errol-challenge-introduction))))
+
+(set! gamespeed 0.1)
+)
+
+(if (and 
+(task-node-open? (game-task-node drill-ship-resolution))
+(= gamespeed 0.0)
+(not (task-node-open? (game-task-node drill-ship-introduction))))
+
+(set! gamespeed 0.1)
+)
+
+(if (and 
+(task-node-open? (game-task-node stadium-race-class3-race))
+(= gamespeed 0.0)
+(not (task-node-open? (game-task-node stadium-race-class3-introduction))))
+
+(set! gamespeed 0.1)
+)
+
+(if (and 
+(task-node-open? (game-task-node stadium-race-class2-race))
+(= gamespeed 0.0)
+(not (task-node-open? (game-task-node stadium-race-class2-introduction))))
+
+(set! gamespeed 0.1)
+)
+
+(if (and (= (-> *target* next-state name) 'target-pilot-stance) (= gamespeed 0.0))
+(set! gamespeed 0.1)
+
+)
+
+
+(if (and 
+(task-node-open? (game-task-node stadium-race-class1-race))
+(= gamespeed 0.0)
+(not (task-node-open? (game-task-node stadium-race-class1-introduction))))
+
+(set! gamespeed 0.1)
+)
+
+(if (and 
+(task-node-open? (game-task-node city-play-onin-game-resolution))
+(= gamespeed 0.0)
+(not (task-node-open? (game-task-node city-play-onin-game-wait))))
+
+(set! gamespeed 0.7)
+)
+
+
+(if (and 
+(task-node-open? (game-task-node city-whack-resolution))
+(= gamespeed 0.0)
+(not (task-node-open? (game-task-node city-whack-wait))))
+
+(set! gamespeed 0.7)
+)
+
+
+
+
+(if (and in-zoomer? gamespeed 0.0)
+(set! gamespeed 0.1)
+)
+  (update-rates! (-> *display* bg-clock) gamespeed)
+  (update-rates! (-> *display* entity-clock) gamespeed)
+  ;;(update-rates! (-> *display* target-clock) gamespeed)
+  ;;(update-rates! (-> *display* camera-clock) gamespeed)
+(none)
+)
+
+
+
 ;; add your own unique custom functions here!
 
 ;; Macros can be used more-or-less just like functions
