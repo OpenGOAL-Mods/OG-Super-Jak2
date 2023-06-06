@@ -765,6 +765,20 @@
        (set-vector! (-> self draw color-emissive) (lerp 0.0 0.3 f30-0) (lerp 0.0 0.0 f30-0) (lerp 0.0 0.3 f30-0) 1.0)
        )
      )
+    (('eco-pill-light)
+     (let ((f30-0 (lerp-scale
+                    1.0
+                    0.0
+                    (the float (- (current-time) (-> self color-effect-start-time)))
+                    (* 0.25 (the float (-> self color-effect-duration)))
+                    (the float (-> self color-effect-duration))
+                    )
+                  )
+           )
+       (set-vector! (-> self draw color-mult) (lerp 1.0 1.0 f30-0) (lerp 1.0 1.0 f30-0) (lerp 1.0 1.0 f30-0) 1.0)
+       (set-vector! (-> self draw color-emissive) (lerp 0.3 0.3 f30-0) (lerp 0.3 0.3 f30-0) (lerp 0.3 0.3 f30-0) 1.0)
+       )
+     )
     (('ammo-yellow)
      (let ((f30-1 (lerp-scale
                     1.0
