@@ -45,10 +45,12 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
 
 
 (defun get-jak-speed ()
-(let ((f0-16 (vector-length (let ((v1-180 (new-stack-vector0))) (vector-! v1-180 (-> *target* control transv) (vector-float*! v1-180 (-> *target* control dynam gravity-normal) (vector-dot (-> *target* control dynam gravity-normal) (-> *target* control transv)))))))) (return (/ f0-16 4096)))
-
-0.0
-)
+  (let ((v1-180 (new-stack-vector0)))
+    (vector-! v1-180 (-> *target* control transv) (vector-float*! v1-180 (-> *target* control dynam gravity-normal) (vector-dot (-> *target* control dynam gravity-normal) (-> *target* control transv))))
+    (return (/ (vector-length v1-180) 4096))
+    )
+    0.0
+  )
 
 
 

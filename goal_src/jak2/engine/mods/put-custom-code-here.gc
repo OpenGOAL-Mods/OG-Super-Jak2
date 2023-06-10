@@ -22,86 +22,93 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun-extern get-jak-speed (float))
 (defun-extern set-game-speed float (none))
-    (defun runs-every-frame ()
-    ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
-      (when *target*
-       (set-game-speed (+ (*(get-jak-speed)0.05) 0.125))
-      )
-     
-      
-      (none)
-      )
+(defun runs-every-frame ()
+;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
+  (when *target*
+    (set-game-speed (+ (*(get-jak-speed)0.05) 0.125))
 
-    (defun runs-on-gem-pickup ()
-      ;; Code here runs on any scout fly pickup
-
-      (none)
+    (when (logtest? (focus-status board) (-> *target* focus-status))
+      ;; hover check
+      (if (> *target-board-hold-tricks* 1)
+        (set-setting-by-param *setting-control* 'mode-name 'cam-eye (seconds 0.2) 0)
+        (remove-setting-by-arg0 *setting-control* 'mode-name)
+        )
       )
+    )
+  
+  (none)
+  )
 
-    (defun runs-on-task-close ()
+(defun runs-on-gem-pickup ()
+  ;; Code here runs on any scout fly pickup
+
+  (none)
+  )
+
+(defun runs-on-task-close ()
+
+
+  (none)
+  )
+
+(defun runs-on-eco-pickup ((eco-type pickup-type) (parent process-tree))
+  (let* ((from-vent? #f))
+    ;; Code here runs as soon as you pickup ANY eco
+
+    (case eco-type
+      (((pickup-type eco-yellow))      
+        ;; Code here runs as soon as you pickup yellow eco
+
+        )
+      (((pickup-type eco-red))      
+        ;; Code here runs as soon as you pickup red eco
+
+        )
+      (((pickup-type eco-blue))      
+        ;; Code here runs as soon as you pickup blue eco
+
+        )
+
+      (((pickup-type eco-green))      
+        ;; Code here runs as soon as you pickup big green eco 
+
+        )
+      )
     
+    (when from-vent?
+      ;; Code here runs only if the eco was picked up from a vent
 
-      (none)
       )
+    )
 
-    (defun runs-on-eco-pickup ((eco-type pickup-type) (parent process-tree))
-      (let* ((from-vent? #f))
-        ;; Code here runs as soon as you pickup ANY eco
+  (none)
+  )
 
-        (case eco-type
-          (((pickup-type eco-yellow))      
-            ;; Code here runs as soon as you pickup yellow eco
+(defun runs-on-jak-spawn ()
+  ;; Code here runs every time jak spawns (loading a file new game or death)   
 
-            )
-          (((pickup-type eco-red))      
-            ;; Code here runs as soon as you pickup red eco
+  (none)
+  )
 
-            )
-          (((pickup-type eco-blue))      
-            ;; Code here runs as soon as you pickup blue eco
-
-            )
-
-          (((pickup-type eco-green))      
-            ;; Code here runs as soon as you pickup big green eco 
-
-            )
-          )
-        
-        (when from-vent?
-          ;; Code here runs only if the eco was picked up from a vent
-
-          )
-        )
-
-      (none)
-      )
-
-    (defun runs-on-jak-spawn ()
-      ;; Code here runs every time jak spawns (loading a file new game or death)   
-
-      (none)
-      )
-
-    (defun runs-on-jak-death ((death-event symbol))
-      (case death-event
-        (('dying)
-          ;; Code here runs immediately every time jak dies, before any death animation or death cutscene
-          
-          )
-        (('blackout)
-          ;; Code here runs after jak dies (and any death cutscene finishes), during the blackout before he spawns
-
-          )
-        )
+(defun runs-on-jak-death ((death-event symbol))
+  (case death-event
+    (('dying)
+      ;; Code here runs immediately every time jak dies, before any death animation or death cutscene
       
-      (none)
       )
+    (('blackout)
+      ;; Code here runs after jak dies (and any death cutscene finishes), during the blackout before he spawns
+
+      )
+    )
+  
+  (none)
+  )
 
 
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;; deprecated function defintions.
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; deprecated function defintions.
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    #| these are no longer recommended/supported however we include them anyways to not break anyones mods.
-    |#
+#| these are no longer recommended/supported however we include them anyways to not break anyones mods.
+|#
