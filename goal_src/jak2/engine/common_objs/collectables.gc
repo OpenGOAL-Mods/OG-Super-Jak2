@@ -2753,9 +2753,9 @@ This commonly includes things such as:
     (when (= s2-0 (pickup-type eco-pill-random))
       f30-0
       (you-suck-stage *game-info* #f)
-      (if (zero? (rand-vu-int-count 2))
-        (set! s2-0 (pickup-type eco-pill-dark))
+      (if (and (= (level-status *level* 'atoll) 'active) (zero? (rand-vu-int-count 2)))
         (set! s2-0 (pickup-type eco-pill-light))
+        (set! s2-0 (pickup-type eco-pill-dark))
         )
       (set! f30-0 (cond
                     ((< 20 (-> *game-info* live-eco-pill-count))
