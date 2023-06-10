@@ -29,9 +29,11 @@
 
     (when (logtest? (focus-status board) (-> *target* focus-status))
       ;; hover check
+      (persist-with-delay *setting-control* 'interp-time (seconds 0.05) 'interp-time 'hi 0.0 0)
+      (persist-with-delay *setting-control* 'interp-time (seconds 0.1) 'interp-time 'lo 300.0 0)
       (if (> *target-board-hold-tricks* 1)
-        (set-setting-by-param *setting-control* 'mode-name 'cam-eye (seconds 0.2) 0)
-        (remove-setting-by-arg0 *setting-control* 'mode-name)
+        (set-setting-by-param *setting-control* 'mode-name 'cam-eye (seconds 0.8) 0)
+        (set-setting-by-param *setting-control* 'mode-name 'cam-string (seconds 0.8) 0)
         )
       )
     )
