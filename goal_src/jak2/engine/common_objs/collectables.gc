@@ -2793,7 +2793,6 @@ This commonly includes things such as:
       (if (= s2-0 (pickup-type fuel-cell))
           (set! (-> s3-1 start-pos y) (+ 6144.0 (-> s3-1 start-pos y)))
           )
-      (format 0 "drop-pickup~%")
       (birth-pickup-at-point (-> s3-1 start-pos) s2-0 f30-0 arg0 arg1 obj)
       )
     )
