@@ -22,13 +22,46 @@
     ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun-extern get-jak-speed (float))
 (defun-extern set-game-speed float (none))
-
 (defun runs-every-frame ()
-;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
+  ;; (increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in define-custom-functions-here.gc
+
+  ;; Sample code to turn jak pink whenever he's doing the jetboard hover glitch
+  ;; (when *target* 
+  ;;   (if (board-hovering?)
+  ;;     (draw-pink *target*)
+  ;;     (draw-normal *target*)
+  ;;     )
+  ;;   )
+
   (when *target*
     (set-game-speed (+ (*(get-jak-speed)0.05) 0.125))
-  )
-  
+
+    (cond
+      ;; make jak red when hovering in rescue friends
+      ((or (= (level-status *level* 'forresca) 'active) (= (level-status *level* 'forrescb) 'active))
+        (if (board-hovering?)
+          (draw-red *target*)
+          (draw-normal *target*)
+          )
+        )
+      ;; make camera go up with jak when hoving outside/in weapons factory
+      ((or (= (level-status *level* 'caspad) 'active) (= (level-status *level* 'castle) 'active))
+        (if (board-hovering?)
+          (set-setting-by-param *setting-control* 'slave-options 'clear 0 (cam-slave-options JUMP_PITCHES))
+          (remove-setting-by-arg0 *setting-control* 'slave-options)
+          )
+        )
+      ;; use eye-cam when hoving in skatepark
+      ((or (= (level-status *level* 'skatea) 'active))
+        (if (board-hovering?)
+          (set-setting-by-param *setting-control* 'mode-name 'cam-eye (seconds 0.5) 0)
+          (if (and *camera* (send-event *camera* 'query-state cam-eye))
+            (remove-setting-by-arg0 *setting-control* 'mode-name)
+            )
+          )
+        )
+      )
+    )
   
   (none)
   )
