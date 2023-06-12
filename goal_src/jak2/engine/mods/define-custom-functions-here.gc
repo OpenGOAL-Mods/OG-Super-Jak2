@@ -37,18 +37,19 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
 ;; Define Custom Variables to use in mods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(define *target-board-hold-tricks* 0) ;; used to detect if player is doing a jetboard hover (see board-states.gc)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Define Custom Functions to call in mods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 (defun get-jak-speed ()
-(let ((f0-16 (vector-length (let ((v1-180 (new-stack-vector0))) (vector-! v1-180 (-> *target* control transv) (vector-float*! v1-180 (-> *target* control dynam gravity-normal) (vector-dot (-> *target* control dynam gravity-normal) (-> *target* control transv)))))))) (return (/ f0-16 4096)))
-
-0.0
-)
+  (let ((v1-180 (new-stack-vector0)))
+    (vector-! v1-180 (-> *target* control transv) (vector-float*! v1-180 (-> *target* control dynam gravity-normal) (vector-dot (-> *target* control dynam gravity-normal) (-> *target* control transv))))
+    (return (/ (vector-length v1-180) 4096))
+    )
+    0.0
+  )
 
 
 
@@ -117,6 +118,10 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
   ;; with the two macros defined above, this is equivalent to
   ;; (set! (-> *game-info* fuel) (+ (-> *game-info* fuel) 1))
   (none)
+  )
+
+(defmacro board-hovering? ()
+  `(and (logtest? (focus-status board) (-> *target* focus-status)) (> *target-board-hold-tricks* 1))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -389,6 +394,24 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
   (draw-xyz jak 0.0 3.0 3.0)
 )
 
-
-
-
+(defun mod-override-init-position ((obj process-drawable) (arg0 entity-actor))
+  (case (-> obj name) :comp name=
+    ;; ====== ORBS / TOMB ======
+    ;; === tomba (central chamber) ===
+    (('skill-65) (set-vector-meters! (-> arg0 extra trans) 222.33 -64.0 1265.3))  ;; corner of pillar at start of OOB for left tomb skip
+    (('skill-66) (set-vector-meters! (-> arg0 extra trans) 192.13 -48.0 1069.2)) ;; little hole under bridge near top
+    (('skill-67) (set-vector-meters! (-> arg0 extra trans) 162.35 -16.7 1057.65)) ;; up around right corner at start
+    (('skill-68) (set-vector-meters! (-> arg0 extra trans) 172.33 -22.0 1383.98)) ;; top right above boss - proxy from torch to upper ledge then abbah bounce (or just proxy/hover)
+    ;; === tombb (left tomb) ===
+    (('skill-9) (set-vector-meters! (-> arg0 extra trans) 332.85 -36.5 1253.96)) ;; in flame above where it usually is
+    ;; === tombc (right tomb) ===
+    ;; none
+    ;; === tombd (entrance area) ===
+    ;; none
+    ;; === tombe (daxter spider chase) ===
+    ;; none
+    ;; === tombboss (praxis 2)
+    ;; none
+    )
+  (none)
+  )

@@ -238,6 +238,7 @@
         (pickup-type eco-yellow)
         (pickup-type health)
         (pickup-type eco-pill-dark)
+        (pickup-type eco-pill-light)
         (pickup-type trick-point)
         )
        (logclear! (-> obj mask) (process-mask actor-pause))
@@ -290,6 +291,10 @@
        (set! s5-0 (-> *part-group-id-table* 82))
        (set! (-> obj collect-effect) (-> *part-group-id-table* 92))
        )
+      (((pickup-type eco-pill-light))
+       (set! s5-0 (-> *part-group-id-table* 1300))
+       (set! (-> obj collect-effect) (-> *part-group-id-table* 1301))
+      )
       )
     (if s5-0
         (set! (-> obj part) (create-launch-control s5-0 obj))
@@ -419,6 +424,14 @@
        (set! (-> obj collect-effect2) (the-as basic 0))
        0
        )
+     )
+    (((pickup-type eco-pill-light))
+     (sound-play "pill-pickup")
+    ;;  (when (>= (-> *game-info* eco-pill-dark) (-> *FACT-bank* eco-pill-dark-max-default))
+    ;;    (set! (-> obj collect-effect) (the-as basic 0))
+    ;;    (set! (-> obj collect-effect2) (the-as basic 0))
+    ;;    0
+    ;;    )
      )
     (((pickup-type fuel-cell))
      (sound-play "pu-powercell")
@@ -870,6 +883,9 @@
        (sound-play "gem-spawn")
        )
       (((pickup-type eco-pill-dark))
+       (sound-play "pill-spawn")
+       )
+      (((pickup-type eco-pill-light))
        (sound-play "pill-spawn")
        )
       )
@@ -2508,7 +2524,7 @@ This commonly includes things such as:
        (set! sv-48 0)
        0
        )
-      (((pickup-type eco-pill-green) (pickup-type eco-pill-dark))
+      (((pickup-type eco-pill-green) (pickup-type eco-pill-dark) (pickup-type eco-pill-light))
        (set! sv-40
              (process-spawn eco-pill :init initialize-eco-by-other arg0 sv-32 sv-56 :from *pickup-dead-pool* :to arg4)
              )
@@ -2722,7 +2738,7 @@ This commonly includes things such as:
                   (set! f30-0 (* 0.1 f30-0))
                   )
                  (else
-                   (set! s2-0 (pickup-type eco-pill-dark))
+                   (set! s2-0 (pickup-type eco-pill-random))
                    )
                  )
                )
@@ -2737,7 +2753,10 @@ This commonly includes things such as:
     (when (= s2-0 (pickup-type eco-pill-random))
       f30-0
       (you-suck-stage *game-info* #f)
-      (set! s2-0 (pickup-type eco-pill-dark))
+      (if (and (= (level-status *level* 'atoll) 'active) (zero? (rand-vu-int-count 2)))
+        (set! s2-0 (pickup-type eco-pill-light))
+        (set! s2-0 (pickup-type eco-pill-dark))
+        )
       (set! f30-0 (cond
                     ((< 20 (-> *game-info* live-eco-pill-count))
                      (return (the-as (pointer process) #f))

@@ -42,6 +42,7 @@
   (pass-yellow    31)
   (pass-blue      32)
   (ammo-random    33)
+  (eco-pill-light 34)
   )
 
 (defenum actor-option
@@ -201,6 +202,9 @@
   (case arg0
     (((pickup-type eco-pill-dark))
      "eco-pill-dark"
+     )
+    (((pickup-type eco-pill-light))
+     "eco-pill-light"
      )
     (((pickup-type gun-blue))
      "gun-blue"
