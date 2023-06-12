@@ -1589,8 +1589,9 @@
   )
 
 (define *actor-spawn-multi* 1)
+(define *use-multi-actor* #f)
 (defmethod birth! entity-actor ((obj entity-actor))
-(if (= 1 1)
+(if *use-multi-actor*
 (set! *actor-spawn-multi* (rand-vu-int-range 1 8))
 )
 (dotimes (i *actor-spawn-multi*)
