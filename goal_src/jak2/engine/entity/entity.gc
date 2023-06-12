@@ -1588,7 +1588,12 @@
   (none)
   )
 
+(define *actor-spawn-multi* 1)
 (defmethod birth! entity-actor ((obj entity-actor))
+(if (= 1 1)
+(set! *actor-spawn-multi* (rand-vu-int-range 1 8))
+)
+(dotimes (i *actor-spawn-multi*)
   (let* ((s5-0 (-> obj etype))
          (v1-0 (entity-info-lookup s5-0))
          (s4-0 (get-process *default-dead-pool* s5-0 (if v1-0
@@ -1601,11 +1606,13 @@
     (cond
       ((not s4-0)
        )
-      ((begin
+      (
+      (begin
          (set! (-> s4-0 type) s5-0)
          (and s5-0 (valid? s5-0 type (the-as string #f) #f 0) (valid? (method-of-object s4-0 init-from-entity!) function (the-as string #f) #f 0))
          )
        (init-entity s4-0 obj s5-0)
+      
        )
       (else
         (when (not (birth-viewer s4-0 obj))
@@ -1615,6 +1622,7 @@
         )
       )
     )
+)
   obj
   )
 
@@ -1914,12 +1922,79 @@
   (none)
   )
 
+
+(define-extern plant-boss type)
+(define-extern qbert-plat type)
+(define-extern fishermans-boat type)
+(define-extern oracle type)
+(define-extern citb-arm type)
+(define-extern citb-arm-a type)
+(define-extern citb-arm-c type)
+(define-extern citb-arm-b type)
+(define-extern citb-arm-d type)
+(define-extern citb-arm-section type)
+(define-extern citb-arm-shoulder type)
+(define-extern citb-arm-shoulder-b type)
+(define-extern citb-arm-shoulder-a type)
+(define-extern gondola type)
+(define-extern dig-clasp type)
+(define-extern dig-clasp-b type)
+(define-extern prsn-cell-door type)
+
 ;; WARN: Return type mismatch process-drawable vs none.
 (defun process-drawable-from-entity! ((arg0 process-drawable) (arg1 entity-actor))
   (logior! (-> arg0 mask) (process-mask actor-pause))
   (set! (-> arg0 root trans quad) (-> arg1 extra trans quad))
   (quaternion-copy! (-> arg0 root quat) (-> arg1 quat))
   (vector-identity! (-> arg0 root scale))
+ 
+  ;; (set! (-> arg0 draw color-mult r) (rand-vu-float-range 0.0 255.0))
+  ;; (set! (-> arg0 draw color-mult g) (rand-vu-float-range 0.0 255.0))
+  ;; (set! (-> arg0 draw color-mult b) (rand-vu-float-range 0.0 255.0))
+
+  ;; (when arg0
+  ;;   (if (= (-> arg0 type) prsn-cell-door)
+  ;; (set! (-> arg0 draw color-mult b) (rand-vu-float-range 0.0 255.0))
+ 
+  ;; ;; (set! (-> (the-as prsn-cell-door (process-by-ename "prsn-cell-door-3")) draw color-mult b)(rand-vu-float-range 0.0 255.0))
+  ;; )
+  ;; )
+  (if (= (-> arg0 type) prsn-cell-door)
+  ;;(set! (-> arg0 draw color-mult b) (rand-vu-float-range 0.0 255.0))
+  (none)
+  ;; (set! (-> (the-as prsn-cell-door (process-by-ename "prsn-cell-door-3")) draw color-mult b)(rand-vu-float-range 0.0 255.0))
+  )
+  
+ ;; (set! (the-as prsn-cell-door (process-by-ename "prsn-cell-door-3")) (rand-vu-float-range 0.0 255.0))
+
+
+
+  (when (or (= (level-status *level* 'dig1) 'active) (= (level-status *level* 'dig3a) 'active) (= (level-status *level* 'dig3b) 'active))
+    (case (-> arg0 type)
+        ;;If you add a type here you can specifiy specific scaling to use instead of -1.0  4.0 
+          ((plant-boss)
+            (set! (-> arg0 root scale x) (rand-vu-float-range 0.1 4.0))
+            (set! (-> arg0 root scale y) (rand-vu-float-range 0.1 4.0))
+            (set! (-> arg0 root scale z) (rand-vu-float-range 0.1 4.0))
+           )
+          ((qbert-plat)
+            (set! (-> arg0 root scale x) (rand-vu-float-range 0.1 1.0))
+            (set! (-> arg0 root scale y) (rand-vu-float-range 0.1 1.0))
+            (set! (-> arg0 root scale z) (rand-vu-float-range 0.1 1.0))
+           )
+          ((dig-clasp dig-clasp-b)
+            (none)
+           )
+          (else
+            (set! (-> arg0 root scale x) (rand-vu-float-range -1.0 4.0))
+            (set! (-> arg0 root scale y) (rand-vu-float-range -1.0 4.0))
+            (set! (-> arg0 root scale z) (rand-vu-float-range -1.0 4.0))
+            )
+          )
+          )
+
+
+
   (none)
   )
 
