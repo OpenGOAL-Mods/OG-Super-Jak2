@@ -1631,6 +1631,8 @@
       )
     )
 )
+;;set it back to 1
+(set! *actor-spawn-multi* 1.0)
   obj
   )
 
