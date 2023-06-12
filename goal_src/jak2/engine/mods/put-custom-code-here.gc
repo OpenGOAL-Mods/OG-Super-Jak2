@@ -36,13 +36,29 @@
   (when *target*
     (set-game-speed (+ (*(get-jak-speed)0.05) 0.125))
 
-    (when (logtest? (focus-status board) (-> *target* focus-status))
-      ;; hover check
-      (persist-with-delay *setting-control* 'interp-time (seconds 0.05) 'interp-time 'hi 0.0 0)
-      (persist-with-delay *setting-control* 'interp-time (seconds 0.1) 'interp-time 'lo 300.0 0)
-      (if (> *target-board-hold-tricks* 1)
-        (set-setting-by-param *setting-control* 'mode-name 'cam-eye (seconds 0.8) 0)
-        (set-setting-by-param *setting-control* 'mode-name 'cam-string (seconds 0.8) 0)
+    (cond
+      ;; make jak red when hovering in rescue friends
+      ((or (= (level-status *level* 'forresca) 'active) (= (level-status *level* 'forrescb) 'active))
+        (if (board-hovering?)
+          (draw-red *target*)
+          (draw-normal *target*)
+          )
+        )
+      ;; make camera go up with jak when hoving outside/in weapons factory
+      ((or (= (level-status *level* 'caspad) 'active) (= (level-status *level* 'castle) 'active))
+        (if (board-hovering?)
+          (set-setting-by-param *setting-control* 'slave-options 'clear 0 (cam-slave-options JUMP_PITCHES))
+          (remove-setting-by-arg0 *setting-control* 'slave-options)
+          )
+        )
+      ;; use eye-cam when hoving in skatepark
+      ((or (= (level-status *level* 'skatea) 'active))
+        (if (board-hovering?)
+          (set-setting-by-param *setting-control* 'mode-name 'cam-eye (seconds 0.5) 0)
+          (if (and *camera* (send-event *camera* 'query-state cam-eye))
+            (remove-setting-by-arg0 *setting-control* 'mode-name)
+            )
+          )
         )
       )
     )
