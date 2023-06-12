@@ -898,6 +898,8 @@
             )
         )
 
+
+
       ;; clear previous on-screen flag, we don't know if we're on-screen yet.
       (logclear! (-> dc status) (draw-control-status on-screen))
 
@@ -1237,10 +1239,23 @@
           )
         )
       (read! (-> *perf-stats* data (perf-stat-bucket foreground)))
+
+        (if (and (= (rand-vu-int-range 0 8192) 1) (or (= (-> pd draw color-mult r) 1.0)))
+        ;;If shiny recolor!
+        (begin
+            (set! (-> pd draw color-mult r) (rand-vu-float-range 0.0 (* (/ 255.0 255.0) 3.0)))
+            (set! (-> pd draw color-mult g) (rand-vu-float-range 0.0 (* (/ 255.0 255.0) 3.0)))
+            (set! (-> pd draw color-mult b) (rand-vu-float-range 0.0 (* (/ 255.0 255.0) 3.0)))
+        )
+        ;;if not shiny mark as not shiny (set r to 1.1)
+        (begin
+        (set! (-> pd draw color-mult r) 1.1)))
+        ))
+
       (none)
       )
-    )
-  )
+    
+  
 
 (define *hud-lights* (new 'global 'vu-lights))
 (set-vector! (-> *hud-lights* direction 0) 1.0 0.0 0.0 1.0)

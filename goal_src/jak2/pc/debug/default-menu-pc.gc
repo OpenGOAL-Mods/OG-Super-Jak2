@@ -829,6 +829,7 @@
   ;;           )
          (flag "Discord RPC" #t ,(dm-lambda-boolean-flag (-> *pc-settings* discord-rpc?)))
          (flag "Speedrunner Mode" #t ,(dm-lambda-boolean-flag (-> *pc-settings* speedrunner-mode?)))
+         (flag "Use multi actor" #t ,(dm-lambda-boolean-flag *use-multi-actor*))
          (flag "Jetboard Trick String" #t ,(dm-lambda-boolean-flag (-> *pc-settings* jetboard-trick-text?)))
   ;;        (flag "Speedrunner Mode" #t ,(dm-lambda-boolean-flag (-> *pc-settings* speedrunner-mode?)))
          (menu "PS2 settings"

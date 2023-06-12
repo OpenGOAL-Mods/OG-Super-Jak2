@@ -602,6 +602,8 @@
       (when (nonzero? i)
         (let ((node (-> game-nodes i)))
           (when (and (= (-> node task) arg0) (logtest? (-> node flags) (game-task-node-flag close-task)))
+          ;;future hook for runs on main mission complete
+          (play-rand-sound "SNDresources\\folder1\\endmission.mp3" 100)
             (close! node 'event)
             (return #t)
             )
