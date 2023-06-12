@@ -7,6 +7,7 @@
 #include <chrono>
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/Music.hpp>
+#include <filesystem>
 
 
 #include "common/global_profiler/GlobalProfiler.h"
@@ -119,14 +120,25 @@ void playMP3(u32 filePathu32, u32 volume)
     // Spawn a new thread to play the music.
     std::thread thread([=]() {
     std::string filePath = Ptr<String>(filePathu32).c()->data();
-    std::cout << "Playing MP3: " << filePath << std::endl;
+        std::string absolutePath;
+        std::filesystem::path path(filePath);
 
-    sf::Music music;
-    if (!music.openFromFile(filePath))
-    {
-        std::cout << "Failed to load: " << filePath << std::endl;
-        return;
-    }
+        if (path.is_absolute()) {
+            absolutePath = path.string();
+        } else {
+            std::filesystem::path currentDir = std::filesystem::current_path();
+            absolutePath = (currentDir / path).string();
+        }
+
+        std::cout << "Playing MP3: " << absolutePath << std::endl;
+
+        sf::Music music;
+        if (!music.openFromFile(absolutePath))
+        {
+            std::cout << "Failed to load: " << absolutePath << std::endl;
+            return;
+        }
+
         music.setVolume(volume);
         music.play();
         while (music.getStatus() == sf::Music::Playing)
