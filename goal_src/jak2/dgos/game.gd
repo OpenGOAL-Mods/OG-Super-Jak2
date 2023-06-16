@@ -454,4 +454,7 @@
   "mods-settings.o" ;; added
   "define-custom-functions-here.o" ;; added
   "put-custom-code-here.o" ;; added
+  ;; keep indax loaded
+  "target-indax.o"
+  "jak-indax+0-ag.go"
  ))
