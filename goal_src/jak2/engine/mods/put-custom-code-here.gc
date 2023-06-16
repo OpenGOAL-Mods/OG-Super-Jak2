@@ -60,6 +60,10 @@
             )
           )
         )
+      ;; play as daxter in sandover
+      ((= (level-status *level* 'village1) 'active)
+        (play-as-daxter)
+        )
       )
     )
   
