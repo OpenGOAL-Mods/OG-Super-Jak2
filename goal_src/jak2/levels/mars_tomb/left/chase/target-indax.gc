@@ -1298,6 +1298,7 @@
     (none)
     )
   :trans (behavior ()
+    ;; "uppercut"
     (when (and (logtest? (logior (logior (-> *cpad-list* cpads (-> self control cpad number) button0-rel 0)
                                        (-> *cpad-list* cpads (-> self control cpad number) button0-rel 1)
                                        )
@@ -1314,6 +1315,7 @@
           (the-as surface #f)
           )
         )
+    ;; punch into spin
     (when (and (logtest? (logior (logior (-> *cpad-list* cpads (-> self control cpad number) button0-rel 0)
                                        (-> *cpad-list* cpads (-> self control cpad number) button0-rel 1)
                                        )
