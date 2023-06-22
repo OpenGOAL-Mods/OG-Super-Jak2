@@ -3574,6 +3574,7 @@
           (t9-0)
           )
       )
+         
     (let ((v1-5 (the-as collide-shape-prim-group (-> self root-override2 root-prim))))
       (logior! (-> v1-5 child 0 prim-core action) (collide-action no-standon))
       (logclear! (-> v1-5 child 1 prim-core action) (collide-action no-standon))
@@ -3582,8 +3583,10 @@
       )
     0
     (if (zero? (-> self hit-points))
+        (begin
         (set! (-> self root-override2 penetrated-by) (the-as penetrate -1))
-        )
+        (play-rand-sound "SNDresources\\folder1\\fortFR1.mp3" 2000)
+        ))
     (set! (-> self hit-face)
           (the-as uint (if (< (vector-dot
                                 (-> self root-override2 transv)
@@ -3826,6 +3829,7 @@
 (defstate die-falling (crimson-guard-level)
   :virtual #t
   :code (behavior ()
+
     (cond
       ((enemy-method-133 self)
        (ja-channel-push! 1 (seconds 0.2))
@@ -3836,6 +3840,7 @@
                      :num! (seek! (the float (+ (-> (the-as art-joint-anim gp-0) frames num-frames) -1)) f30-0)
                      :frame-num 0.0
                      )
+            
          (until (ja-done? 0)
            (suspend)
            (ja :num! (seek! max f30-0))
@@ -3947,6 +3952,7 @@
     (while (-> self child)
       (suspend)
       )
+    (play-rand-sound "SNDresources\\folder1\\fortFR1.mp3" 500)
     (cleanup-for-death self)
     (none)
     )
