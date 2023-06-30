@@ -1647,7 +1647,7 @@
 
 
 (define *actor-spawn-multi* 1)
-(define *use-multi-actor* #f)
+(define *use-multi-actor* #t)
 (defmethod birth! entity-actor ((obj entity-actor))
 (if (and *use-multi-actor*  (or 
 (= (-> obj etype) juicer)

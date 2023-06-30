@@ -85,3 +85,6 @@
 		)
 	#f)
 
+;;(define-extern krew-boss type)
+
+

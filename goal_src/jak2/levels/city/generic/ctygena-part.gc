@@ -186,7 +186,7 @@
   :flags (unk-4 unk-6)
   :bounds (static-bspherem 0 0 0 128)
   :rotate ((degrees 90) (degrees 0) (degrees 0))
-  :parts ((sp-item 3575 :flags (is-3d bit7))
+  :parts ((sp-item 3575 :flags (is-3d bit7) :fade-after (meters 400))
     (sp-item 3576 :fade-after (meters 400) :flags (bit6) :hour-mask #b111111111110000000)
     )
   )
@@ -203,10 +203,10 @@
     (:b 128.0)
     (:a 128.0)
     (:timer (seconds 0.005))
-    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-12))
-    (:userdata
-      :data (new 'static 'boxed-array :type int32 5 0 0 #x45d01b00 -2139062144 0 1 #x45d01b00 -2143272896 #x404040 0)
-      )
+    (:flags (sp-cpuinfo-flag-2 sp-cpuinfo-flag-3))
+    ;;(:userdata
+    ;; :data (new 'static 'boxed-array :type int32 5 0 0 #x45d01c00 -2139062144 0 1 #x45d01c00 -2143272896 #x404040 0)
+    ;; )
     (:func 'sparticle-texture-day-night)
     (:rotate-y (degrees 0))
     )
